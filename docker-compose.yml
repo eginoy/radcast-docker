@@ -7,3 +7,4 @@ services:
         ports: 
           - "3355:3355"
         tty: true
+        restart: unless-stopped
