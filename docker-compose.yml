@@ -1,0 +1,16 @@
+version: "3.2"
+services: 
+    radcast:
+        build: .
+        environment:
+          TZ: 'Asia/Tokyo'
+        volumes: 
+          - type: bind
+            source: "./recorded"
+            target: "/home/radcast/recorded"
+          - type: bind
+            source: "./radcast.json"
+            target: "/home/radcast/radcast.json"
+        ports: 
+            - "3355:3355"
+        tty: true
