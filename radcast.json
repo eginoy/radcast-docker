@@ -5,7 +5,9 @@
     "HOUSOU-DAIGAKU": [],
     "INT": [],
     "JOAK": [],
-    "JOAK-FM": ["*/1 * * * * *"],
+    "JOAK-FM": [
+      "0 0 18 * * *"
+    ],
     "JORF": [],
     "LFR": [],
     "NACK5": [],
