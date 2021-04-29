@@ -5,12 +5,8 @@ services:
         environment:
           TZ: 'Asia/Tokyo'
         volumes: 
-          - type: bind
-            source: "./recorded"
-            target: "/home/radcast/recorded"
-          - type: bind
-            source: "./radcast.json"
-            target: "/home/radcast/radcast.json"
+          - ./recorded:/home/radcast/recorded
+          - ./radcast.json:/home/radcast/radcast.json
         ports: 
             - "3355:3355"
         tty: true
