@@ -2,11 +2,8 @@ version: "3.2"
 services: 
     radcast:
         build: .
-        environment:
-          TZ: 'Asia/Tokyo'
         volumes: 
-          - ./recorded:/home/radcast/recorded
-          - ./radcast.json:/home/radcast/radcast.json
+          - ./:/home/radcast
         ports: 
-            - "3355:3355"
+          - "3355:3355"
         tty: true
