@@ -2,8 +2,6 @@ FROM golang:alpine
 RUN mkdir /home/radcast
 WORKDIR /home/radcast
 
-ADD config-create.sh .
-
 RUN apk update  && apk add ffmpeg git tzdata &&\
 cp /usr/share/zoneinfo/Asia/Tokyo /etc/localtime && apk del tzdata && \
 go get github.com/omiso46/radcast && \
