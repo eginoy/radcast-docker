@@ -13,6 +13,9 @@
 
 ### その他
 - コンテナ初回起動時(`config.json`が存在しない場合)に録音スケジュールファイル`config.json`を生成している。
-- portは3355番を使用している
-- 録音ファイルは`recorded`ファイルに出力される
+- portは3355番を使用している。
+- 録音ファイルは`recorded`ファイルに出力される。
 - 録音スケジュールファイル`config.json`を更新したら、コンテナを再起動すること。`cd radcast-docker && docker-compose restart`
+
+### LICENSE
+MIT License
