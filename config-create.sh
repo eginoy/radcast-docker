@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/ash
 FILE="config.json"
 if [ ! -e $FILE ]; then
     radcast --setup > config.json
