@@ -9,7 +9,8 @@
 ### 使用方法
 `git clone https://github.com/eginoy/radcast-docker.git`  
 `cd radcast-docker`  
-`docker-compose up -d`  
+`nohup docker-compose up &`  
+ログの吐き出し、バックグラウンド実行するため`nohup`を使用している。
 
 ### その他
 - コンテナ初回起動時(`config.json`が存在しない場合)に録音スケジュールファイル`config.json`を生成している。
