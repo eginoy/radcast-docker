@@ -12,9 +12,7 @@ services:
         environment:
         - PUID=1001
         - PGID=1001
-        - VIRTUAL_HOST=torrent
-        - VIRTUAL_PORT=9091
-        - TZ=America/Chicago
+        - TZ=Asia/Tokyo
         volumes:
         - ./config:/config
         - /lib/modules:/lib/modules
