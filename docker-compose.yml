@@ -1,10 +1,40 @@
-version: "3.2"
+version: "3.7"
 services: 
+    wireguard:
+        image: linuxserver/wireguard
+        container_name: wireguard
+        privileged: true
+        networks:
+           - wireguard
+        cap_add:
+        - NET_ADMIN
+        - SYS_MODULE
+        environment:
+        - PUID=1001
+        - PGID=1001
+        - VIRTUAL_HOST=torrent
+        - VIRTUAL_PORT=9091
+        - TZ=America/Chicago
+        volumes:
+        - ./config:/config
+        - /lib/modules:/lib/modules
+        ports:
+        - 51820:51820/udp
+        - 3355:3355
+        sysctls:
+        - net.ipv4.conf.all.src_valid_mark=1
+        restart: unless-stopped
+
     radcast:
+        depends_on:
+          - wireguard
         build: .
         volumes: 
           - ./:/home/radcast
-        ports: 
-          - "3355:3355"
         tty: true
+        network_mode: service:wireguard
         restart: unless-stopped
+
+networks:
+    wireguard:
+      driver: bridge
