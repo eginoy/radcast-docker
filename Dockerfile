@@ -2,7 +2,7 @@ FROM golang:alpine
 RUN mkdir /home/radcast
 WORKDIR /home/radcast
 
-RUN apk update  && apk add ffmpeg git tzdata &&\
+RUN apk update  && apk add curl ffmpeg git tzdata && \
 cp /usr/share/zoneinfo/Asia/Tokyo /etc/localtime && apk del tzdata && \
 go get github.com/omiso46/radcast && \
 mkdir recorded  
