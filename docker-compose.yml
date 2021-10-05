@@ -18,19 +18,29 @@ services:
         - /lib/modules:/lib/modules
         ports:
         - 51820:51820/udp
-        - 3355:3355
         sysctls:
         - net.ipv4.conf.all.src_valid_mark=1
         restart: unless-stopped
 
-    radcast:
+    radcast_recorder:
         depends_on:
           - wireguard
+        container_name: recorder
         build: .
         volumes: 
           - ./:/home/radcast
         tty: true
         network_mode: service:wireguard
+        restart: unless-stopped
+
+    radcast_podcast:
+        build: .
+        container_name: podcast
+        volumes: 
+          - ./:/home/radcast
+        tty: true
+        ports:
+          - 3355:3355
         restart: unless-stopped
 
 networks:
