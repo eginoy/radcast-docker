@@ -1,49 +1,72 @@
 version: "3.7"
-services: 
-    wireguard:
-        image: linuxserver/wireguard
-        container_name: wireguard
-        privileged: true
-        networks:
-           - wireguard
-        cap_add:
-        - NET_ADMIN
-        - SYS_MODULE
-        environment:
-        - PUID=1001
-        - PGID=1001
-        - TZ=Asia/Tokyo
-        volumes:
-        - ./config:/config
-        - /lib/modules:/lib/modules
-        ports:
-        - 51820:51820/udp
-        sysctls:
-        - net.ipv4.conf.all.src_valid_mark=1
-        - net.ipv6.conf.all.disable_ipv6=0
-        restart: unless-stopped
+services:
+  wireguard:
+    image: linuxserver/wireguard
+    container_name: wireguard
+    privileged: true
+    networks:
+      - wireguard
+    cap_add:
+      - NET_ADMIN
+      - SYS_MODULE
+    environment:
+      - PUID=1001
+      - PGID=1001
+      - TZ=Asia/Tokyo
+    volumes:
+      - ./config:/config
+      - /lib/modules:/lib/modules
+    ports:
+      - 51820:51820/udp
+    sysctls:
+      - net.ipv4.conf.all.src_valid_mark=1
+      - net.ipv6.conf.all.disable_ipv6=0
+    restart: unless-stopped
+    healthcheck:
+      test: curl ifconfig.me || exit 1
+      interval: 60s
+      retries: 5
+      start_period: 30s
+      timeout: 10s
 
-    radcast_recorder:
-        depends_on:
-          - wireguard
-        container_name: recorder
-        build: .
-        volumes: 
-          - ./:/home/radcast
-        tty: true
-        network_mode: service:wireguard
-        restart: unless-stopped
+  radcast_recorder:
+    depends_on:
+      - wireguard
+    container_name: recorder
+    build: .
+    volumes:
+      - ./:/home/radcast
+    tty: true
+    network_mode: service:wireguard
+    restart: unless-stopped
+    healthcheck:
+      test: radcast --setup || exit 1
+      interval: 60s
+      retries: 5
+      start_period: 30s
+      timeout: 10s
 
-    radcast_podcast:
-        build: .
-        container_name: podcast
-        volumes: 
-          - ./:/home/radcast
-        tty: true
-        ports:
-          - 3355:3355
-        restart: unless-stopped
+  radcast_podcast:
+    build: .
+    container_name: podcast
+    volumes:
+      - ./:/home/radcast
+    tty: true
+    ports:
+      - 3355:3355
+    restart: unless-stopped
+
+  autoheal:
+    image: willfarrell/autoheal
+    container_name: autoheal
+    restart: unless-stopped
+    environment:
+      AUTOHEAL_CONTAINER_LABEL: "all"
+      AUTOHEAL_INTERVAL: "10"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    network_mode: none
 
 networks:
-    wireguard:
-      driver: bridge
+  wireguard:
+    driver: bridge
